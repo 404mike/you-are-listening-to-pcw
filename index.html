@@ -1,0 +1,91 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="apple-touch-icon" href="apple-touch-icon.png">
+        <link rel="stylesheet" type="text/css" href="css/listening.css">
+    </head>
+    <body>
+
+    <div id="container">
+      <canvas width="500px"></canvas>
+      <div id="info">
+        <h3><a href="#">Audio title</a></h3>
+      </div>
+      <audio id="pcw" src="" controls autoplay></audio>
+      <div id="soundcloud"></div>
+
+      <hr />
+      <a target"_blank" href="http://www.peoplescollection.wales/user/8777"><img src="images/peoplescollection.jpg" alt="Peoples collection logo" width="500"/></a>
+    </div>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<!-- animation from http://lab.hakim.se/hypnos/ -->
+<script src="js/hypnos.js"></script>
+<script>
+
+$(document).ready(function(){
+
+  $.getJSON("_build/final.json" , function(data) {
+
+    // all the audio files for Media and the Memory
+    pcwAudio = [];
+
+    $.each(data , function(key ,val){
+      // console.log(key)
+      pcwAudio.push(val)      
+    })
+
+    // set a random track to start the soundcloud playlist
+    var randomSoundCloudTrack = Math.floor(Math.random() * 153) + 0;
+
+    // array of soundcloud playlists
+    var playlist = [
+      5281179,
+      53272972
+    ];
+
+    // get a random playlist
+    var randomPlaylist = Math.floor(Math.random() * playlist.length) + 0;
+
+    // Create a new soundcloud widget
+    $('#soundcloud').html('<iframe id="soundcloud" width="300px" height="200px" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/'+playlist[randomPlaylist]+'&amp;auto_play=true&amp;hide_related=ture&amp;show_comments=false&amp;show_user=false&amp;show_reposts=false&amp;visual=false&amp;start_track='+randomSoundCloudTrack+'"></iframe>');
+
+    // Get a random Media and Memory track
+    var randomPCWTrack = Math.floor(Math.random() * pcwAudio.length) + 0;
+
+    // Set the src for the audio element
+    $('#pcw').attr('src' , 'http://www.peoplescollection.wales/sites/default/files/audio/2015/July/'+pcwAudio[randomPCWTrack].id+'.mp3');
+    
+    $('#info').html(
+      "<a target='_blank' href='http://www.peoplescollection.wales/node/"+pcwAudio[randomPCWTrack].response+"'>"+pcwAudio[randomPCWTrack].title_en+"</a> - " +
+      "<a target='_blank' href='http://www.casgliadywerin.cymru/node/"+pcwAudio[randomPCWTrack].response+"'>"+pcwAudio[randomPCWTrack].title_cy+"</a>");
+
+    // Get reference to the audio player
+    var audio = document.getElementById('pcw');
+
+    // Check to see if the track (Media and the Memory) has ended.
+    // if it has select another random track and change the src and 
+    // play the track
+    $("#pcw").bind("ended", function(){
+        var randomPCWTrack = Math.floor(Math.random() * pcwAudio.length) + 0; 
+
+        $('#pcw').attr('src' , 'http://www.peoplescollection.wales/sites/default/files/audio/2015/July/'+pcwAudio[randomPCWTrack].id+'.mp3')
+        audio.play();
+        
+        $('#info').html(
+          "<a target='_blank' href='http://www.peoplescollection.wales/node/"+pcwAudio[randomPCWTrack].response+"'>"+pcwAudio[randomPCWTrack].title_en+"</a> - " +
+          "<a target='_blank' href='http://http://www.casgliadywerin.cymru/node/"+pcwAudio[randomPCWTrack].response+"'>"+pcwAudio[randomPCWTrack].title_cy+"</a>");
+        });
+  });
+});
+</script>
+
+    </body>
+</html>

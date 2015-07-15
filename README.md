@@ -1,2 +1,1 @@
-# you-are-listening-to-pcw
-You are listening to PCW
+Mash-up of audio interviews from [Media and the memory in Wales](http://www.peoplescollection.wales/user/8777) and ambient music from soundcloud.  Inspired by [youarelistening.to/newyork](youarelistening.to/newyork).
